@@ -9,6 +9,7 @@ Set required env variables in`.env` file:
 ```
 SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
+NEXT_AUTH_SECRET=
 ```
 
 Start application:
