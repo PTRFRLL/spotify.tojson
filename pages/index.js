@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
-import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faBomb } from "@fortawesome/free-solid-svg-icons";
 import Container from "../components/Container";
 import { useRouter } from "next/router";
 
-library.add(faSpotify, faArrowRightFromBracket);
+library.add(faSpotify, faArrowRightFromBracket, faBomb);
 
 export default function Home() {
   const { data: session, status } = useSession();

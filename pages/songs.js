@@ -9,6 +9,8 @@ import useSWR from "swr";
 import fetcher from "../lib/fetcher";
 import Tracks from "../components/Tracks";
 import { Audio } from "react-loader-spinner";
+import Loader from "../components/Loader";
+import Error from "../components/Error";
 
 library.add(faDownload);
 
@@ -39,13 +41,8 @@ export default function Songs() {
   return (
     <Container>
       <h1 className="font-bold text-2xl md:text-3xl tracking-tight text-black dark:text-gray-100">Saved Songs</h1>
-      {!data && !error && (
-        <>
-          <Audio height="100" width="100" color="grey" ariaLabel="loading" />
-          <h1>Loading...</h1>
-        </>
-      )}
-      {error && <p>Something no worky...</p>}
+      {!data && !error && <Loader />}
+      {error && <Error />}
       {data && !error && (
         <>
           <p>Found {data.tracks.length} saved tracks</p>

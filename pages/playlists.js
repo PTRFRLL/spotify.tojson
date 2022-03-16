@@ -7,6 +7,8 @@ import { Audio } from "react-loader-spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import fetcher from "../lib/fetcher";
 import Playlist from "../components/Playlist";
+import Loader from "../components/Loader";
+import Error from "../components/Error";
 
 export default function Playlists() {
   const { data: session, status } = useSession();
@@ -35,7 +37,8 @@ export default function Playlists() {
   return (
     <Container>
       <h1 className="font-bold text-2xl md:text-3xl tracking-tight text-black dark:text-gray-100">Playlists</h1>
-      {!data && <Audio height="100" width="100" color="grey" ariaLabel="loading" />}
+      {!data && !error && <Loader />}
+      {error && <Error />}
       {data && (
         <>
           <p>Found {data.playlists.length} playlists</p>

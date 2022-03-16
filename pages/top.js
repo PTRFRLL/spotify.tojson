@@ -12,6 +12,8 @@ import useSWR from "swr";
 import fetcher from "../lib/fetcher";
 import Tracks from "../components/Tracks";
 import { Audio } from "react-loader-spinner";
+import Loader from "../components/Loader";
+import Error from "../components/Error";
 
 library.add(faSpotify, faArrowRightFromBracket);
 
@@ -33,9 +35,9 @@ export default function Top() {
       <h1 className="font-bold text-2xl md:text-3xl tracking-tight text-black dark:text-gray-100">Top Songs</h1>
       <div className="flex justify-between items-center w-full relative max-w-2xl border-gray-200 dark:border-gray-700 mx-auto pt-8 pb-2 sm:pb-4  text-gray-900 bg-opacity-60 dark:text-gray-100">
         <div>
-          <button className={term === 'short_term' ? "font-semibold border-b border-gray-800 dark:border-gray-100 mx-2" : "mx-2"} onClick={() => {setTerm('short_term')}}>Last 4 Weeks</button>
-          <button className={term === 'medium_term' ? "font-semibold border-b border-gray-800 dark:border-gray-100 mx-2" : "mx-2"} onClick={() => {setTerm('medium_term')}}>Last 6 Months</button>
           <button className={term === 'long_term' ? "font-semibold border-b border-gray-800 dark:border-gray-100 mx-2" : "mx-2"} onClick={() => {setTerm('long_term')}}>All Time</button>
+          <button className={term === 'medium_term' ? "font-semibold border-b border-gray-800 dark:border-gray-100 mx-2" : "mx-2"} onClick={() => {setTerm('medium_term')}}>Last 6 Months</button>
+          <button className={term === 'short_term' ? "font-semibold border-b border-gray-800 dark:border-gray-100 mx-2" : "mx-2"} onClick={() => {setTerm('short_term')}}>Last 4 Weeks</button>
         </div>
         <div>
           <span>Limit:  </span>
@@ -44,10 +46,8 @@ export default function Top() {
           <button className={limit === '50' ? "font-semibold border-b border-gray-800 dark:border-gray-100 mx-1" : "mx-1"} onClick={() => {setLimit('50')}}>50</button>
         </div>
       </div>
-      {!data && <>
-        <h1>Loading...</h1>
-        <Audio height="100" width="100" color="grey" ariaLabel="loading" />
-      </>}
+      {!data && <Loader />}
+      {error && <Error />}
       {data && <Tracks tracks={data.tracks} />}
     </Container>
   );
