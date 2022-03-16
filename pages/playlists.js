@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Container from "../components/Container";
 import { useRouter } from "next/router";
@@ -11,15 +11,7 @@ import Loader from "../components/Loader";
 import Error from "../components/Error";
 
 export default function Playlists() {
-  const { data: session, status } = useSession();
   const { data, error } = useSWR(`/api/playlists`, fetcher);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!session) {
-      router.push("/");
-    }
-  }, [session]);
 
   const downloadFile = async () => {
     const fileName = `playlists-${+new Date()}`;
@@ -39,7 +31,7 @@ export default function Playlists() {
       <h1 className="font-bold text-2xl md:text-3xl tracking-tight text-black dark:text-gray-100">Playlists</h1>
       {!data && !error && <Loader />}
       {error && <Error />}
-      {data && (
+      {data && !error && (
         <>
           <p>Found {data.playlists.length} playlists</p>
           <button className="rounded px-4 py-2 mt-2 bg-blue-600 text-white" onClick={() => downloadFile()}>
@@ -53,4 +45,23 @@ export default function Playlists() {
       )}
     </Container>
   );
+}
+
+export async function getServerSideProps(ctx) {
+  const session = await getSession(ctx);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
 }

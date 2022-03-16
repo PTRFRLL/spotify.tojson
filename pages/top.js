@@ -1,34 +1,21 @@
-import { signIn, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import Track from "../components/Track";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library, config } from "@fortawesome/fontawesome-svg-core";
+import { getSession } from "next-auth/react";
+import {  useState } from "react";
+import { library } from "@fortawesome/fontawesome-svg-core";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import Container from "../components/Container";
-import User from "../components/User";
-import { useRouter } from "next/router";
 import useSWR from "swr";
 import fetcher from "../lib/fetcher";
 import Tracks from "../components/Tracks";
-import { Audio } from "react-loader-spinner";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
 
 library.add(faSpotify, faArrowRightFromBracket);
 
 export default function Top() {
-  const { data: session, status } = useSession();
   const [term, setTerm] = useState("long_term");
   const [limit, setLimit] = useState("10");
   const { data, error } = useSWR(`/api/top-tracks?time_range=${term}&limit=${limit}`, fetcher);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!session) {
-      router.push("/");
-    }
-  }, [session]);
 
   return (
     <Container>
@@ -51,4 +38,23 @@ export default function Top() {
       {data && <Tracks tracks={data.tracks} />}
     </Container>
   );
+}
+
+export async function getServerSideProps(ctx) {
+  const session = await getSession(ctx);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
 }

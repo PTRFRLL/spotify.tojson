@@ -1,4 +1,4 @@
-import { signIn, useSession } from "next-auth/react";
+import { getSession, signIn, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -10,15 +10,6 @@ import { useRouter } from "next/router";
 library.add(faSpotify, faArrowRightFromBracket, faBomb);
 
 export default function Home() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (session) {
-      router.push("/top");
-    }
-  }, [session]);
-
   return (
     <Container>
       <h1 className="font-bold text-3xl md:text-5xl tracking-tight mb-4 text-black dark:text-gray-100">
@@ -38,4 +29,24 @@ export default function Home() {
       </button>
     </Container>
   );
+}
+
+
+export async function getServerSideProps(ctx) {
+  const session = await getSession(ctx);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/top",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
 }

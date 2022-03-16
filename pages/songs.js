@@ -1,5 +1,4 @@
-import { signIn, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { signIn, useSession, getSession } from "next-auth/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
@@ -15,15 +14,7 @@ import Error from "../components/Error";
 library.add(faDownload);
 
 export default function Songs() {
-  const { data: session, status } = useSession();
   const { data, error } = useSWR(`/api/saved-tracks`, fetcher);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!session) {
-      router.push("/");
-    }
-  }, [session]);
 
   const downloadFile = async () => {
     const fileName = `saved-songs-${+new Date()}`;
@@ -54,4 +45,23 @@ export default function Songs() {
       )}
     </Container>
   );
+}
+
+export async function getServerSideProps(ctx) {
+  const session = await getSession(ctx);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
 }
