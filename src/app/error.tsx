@@ -16,7 +16,7 @@ export default function ErrorPage({ reset }: { reset: () => void }) {
           Something unexpected happened. You can try again or if that doesn&apos;t work try signing out and back in
         </p>
 
-        <Button type="submit" onPress={() => reset()} className="bg-green">
+        <Button aria-label="try again" type="submit" onPress={() => reset()} className="bg-green">
           Try again
         </Button>
       </div>

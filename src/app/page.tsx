@@ -32,6 +32,7 @@ export default async function Home() {
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
                 <form action={signIn}>
                   <Button
+                    aria-label="Sign in using Spotify"
                     type="submit"
                     className="bg-spoti font-bold"
                     size="lg"

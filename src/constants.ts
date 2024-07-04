@@ -2,7 +2,7 @@ import paths from "./paths";
 
 export const SITE_NAME = "Spotify.toJSON()";
 
-const REPO_PATH = "https://github.com/PTRFRLL/spotify.tojson";
+export const REPO_PATH = "https://github.com/PTRFRLL/spotify.tojson";
 
 export type NavItem = {
   name: string;
@@ -24,10 +24,5 @@ export const NAV_ITEMS: NavItem[] = [
     name: "Playlists",
     href: paths.playlists,
     isProtected: true,
-  },
-  {
-    name: "About",
-    href: REPO_PATH,
-    isProtected: false,
   },
 ];
