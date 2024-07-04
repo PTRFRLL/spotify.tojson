@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.brand {
+  text-decoration: none !important
+}
+
 li[data-active="true"] {
     @apply underline decoration-spoti;
+  }
+
+  header > ul > li {
+    @apply hover:underline
   }

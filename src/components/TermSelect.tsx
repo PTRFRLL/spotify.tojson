@@ -29,7 +29,7 @@ function TermSelect() {
       <div>
         <button
           className={clsx("mx-2", {
-            "font-semibold mx-2 underline decoration-spoti": selectedTerm === "short_term",
+            "font-semibold mx-2 underline decoration-spoti": !selectedTerm || selectedTerm === "short_term",
           })}
           onClick={() => {
             setTerm("short_term");

@@ -22,8 +22,8 @@ export default function HeaderLinks() {
     <NavbarContent justify="start">
       {isAuthed && <NavbarMenuToggle className="sm:hidden" />}
       {!isAuthed && (
-        <NavbarItem isActive={pathname === paths.home} className="underline hover:underline">
-          <Link className="text-xl font-mono  " href={paths.home}>
+        <NavbarItem className="brand">
+          <Link className="text-xl brand font-mono" href={paths.home}>
             {SITE_NAME}
           </Link>
         </NavbarItem>
