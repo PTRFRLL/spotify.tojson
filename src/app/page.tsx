@@ -31,7 +31,12 @@ export default async function Home() {
               </div>
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
                 <form action={signIn}>
-                  <Button type="submit" className="bg-green text-black" size="lg" startContent={<FaSpotify />}>
+                  <Button
+                    type="submit"
+                    className="bg-spoti font-bold"
+                    size="lg"
+                    startContent={<FaSpotify size={"1.5em"} />}
+                  >
                     Sign in using Spotify
                   </Button>
                 </form>

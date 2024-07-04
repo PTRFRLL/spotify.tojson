@@ -18,6 +18,7 @@ export default function DownloadButton({ count, left, endpoint }: Props) {
   const [data, setData] = useState(null);
   const [running, setRunning] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [error, setError] = useState(false);
 
   const dateString = () => {
     let date = new Date();
@@ -57,6 +58,7 @@ export default function DownloadButton({ count, left, endpoint }: Props) {
     eventSource.onerror = () => {
       console.error("Something happened");
       eventSource.close();
+      setError(true);
     };
 
     return () => {
@@ -68,16 +70,25 @@ export default function DownloadButton({ count, left, endpoint }: Props) {
     setRunning(true); // Trigger the effect to start the task
   };
 
+  const color = () => {
+    if (error) {
+      return "danger";
+    } else if (progress >= 100) {
+      return "success";
+    }
+    return "primary";
+  };
+
   return (
     <div>
-      <div className="flex flex-row gap-2 justify-between">
+      <div className="flex flex-row gap-2 justify-between items-center">
         {left && <div>{left}</div>}
         <div>
           <Tooltip content="This can take some time, please be patient">
             <Button
               variant="bordered"
               isDisabled={running}
-              isLoading={running}
+              isLoading={running && !error}
               onPress={handleStartTask}
               startContent={running ? null : <FaDownload />}
             >
@@ -87,9 +98,7 @@ export default function DownloadButton({ count, left, endpoint }: Props) {
         </div>
       </div>
       <div className="my-2">
-        {progress > 0 && (
-          <Progress size="sm" color={progress >= 100 ? "success" : "primary"} value={progress} aria-label="Loading" />
-        )}
+        {progress > 0 && <Progress size="sm" color={color()} value={progress} aria-label="Loading" />}
       </div>
     </div>
   );

@@ -65,10 +65,14 @@ export default async function Header() {
   }
 
   return (
-    <Navbar isBordered className="mb-4">
-      <NavbarContent justify="start">
-        <HeaderLinks />
-      </NavbarContent>
+    <Navbar
+      isBordered
+      className="mb-4"
+      classNames={{
+        item: ["hover:underline"],
+      }}
+    >
+      <HeaderLinks />
 
       <NavbarContent justify="end">
         <NavbarItem>

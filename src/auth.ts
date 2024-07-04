@@ -52,9 +52,6 @@ export const {
       } else {
         if (!token.refresh_token) throw new Error("Missing refresh token");
         try {
-          // The `token_endpoint` can be found in the provider's documentation. Or if they support OIDC,
-          // at their `/.well-known/openid-configuration` endpoint.
-          // i.e. https://accounts.google.com/.well-known/openid-configuration
           const response = await fetch(TOKEN_ENDPOINT, {
             headers: { "Content-Type": "application/x-www-form-urlencoded", Authorization: `Basic ${basic}` },
             body: new URLSearchParams({
@@ -74,8 +71,7 @@ export const {
             ...token,
             access_token: responseTokens.access_token,
             expires_at: Math.floor(Date.now() / 1000 + (responseTokens.expires_in as number)),
-            // Fall back to old refresh token, but note that
-            // many providers may only allow using a refresh token once.
+
             refresh_token: responseTokens.refresh_token ?? token.refresh_token,
           };
         } catch (error) {

@@ -1,8 +1,22 @@
-# Spotify Tools
+# Spotify.toJSON()
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/48c09456-a787-43ff-a1a1-3de66fd43a13/deploy-status)](https://app.netlify.com/sites/quizzical-perlman-2027f3/deploys)
+> Export your Spotify data as JSON
 
-> Simple app to display users top spotify tracks
+## Features
+
+Export your Spotify data to JSON for safe keeping, analysis, or sharing.
+
+### Export playlists
+
+![playlists](/public/playlists.png)
+
+### Export Saved Songs
+
+![saved](/public/saved.png)
+
+### Export Top Played Songs
+
+![top](/public/top.png)
 
 ## Getting started
 
@@ -16,7 +30,16 @@ AUTH_SECRET=
 
 Start application:
 
-```bash
+```sh
 npm install
 npm run dev
 ```
+
+## Built With
+
+- [NextJS](https://nextjs.org/)
+- [Next-Auth/Auth.js](https://authjs.dev)
+- [Tailwindcss](https://tailwindcss.com/)
+- [NextUI](https://nextui.org/)
+- [NextTheme](https://github.com/pacocoursey/next-themes)
+- [Spotify Web Api](https://developer.spotify.com/documentation/web-api)

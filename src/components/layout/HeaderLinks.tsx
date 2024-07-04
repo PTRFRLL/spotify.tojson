@@ -1,7 +1,8 @@
 "use client";
 
+import { NAV_ITEMS, SITE_NAME } from "@/constants";
 import paths from "@/paths";
-import { NavbarItem, NavbarMenuToggle } from "@nextui-org/react";
+import { Navbar, NavbarContent, NavbarItem, NavbarMenuToggle } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,32 +14,29 @@ export default function HeaderLinks() {
 
   const isAuthed = session.data?.user;
 
+  if (session.status == "loading") {
+    return null;
+  }
+
   return (
-    <>
+    <NavbarContent justify="start">
       {isAuthed && <NavbarMenuToggle className="sm:hidden" />}
       {!isAuthed && (
-        <NavbarItem isActive={pathname === paths.home}>
-          <Link className="text-xl" href={paths.home}>
-            Spotify Tools
+        <NavbarItem isActive={pathname === paths.home} className="underline hover:underline">
+          <Link className="text-xl font-mono  " href={paths.home}>
+            {SITE_NAME}
           </Link>
         </NavbarItem>
       )}
 
-      {isAuthed && (
-        <NavbarItem isActive={pathname === paths.top} className="hidden sm:flex">
-          <Link href={paths.top}>Top Tracks</Link>
-        </NavbarItem>
-      )}
-      {isAuthed && (
-        <NavbarItem isActive={pathname === paths.saved} className="hidden sm:flex">
-          <Link href={paths.saved}>Saved Tracks</Link>
-        </NavbarItem>
-      )}
-      {isAuthed && (
-        <NavbarItem isActive={pathname === paths.playlists} className="hidden sm:flex">
-          <Link href={paths.playlists}>Playlists</Link>
-        </NavbarItem>
-      )}
-    </>
+      {NAV_ITEMS.map(({ href, name, isProtected }) => {
+        if (isProtected && !isAuthed) return null;
+        return (
+          <NavbarItem key={href} isActive={pathname === href} className="hidden sm:flex text-md">
+            <Link href={href}>{name}</Link>
+          </NavbarItem>
+        );
+      })}
+    </NavbarContent>
   );
 }

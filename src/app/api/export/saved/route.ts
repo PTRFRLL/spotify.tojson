@@ -1,3 +1,4 @@
+export const maxDuration = 60;
 import { SpotifyTask } from "@/actions/SpotifyTask";
 import { auth } from "@/auth";
 

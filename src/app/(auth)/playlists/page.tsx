@@ -1,7 +1,13 @@
 import { fetchUserPlaylists } from "@/actions/spotify";
 import PlaylistList from "@/components/playlists/PlaylistList";
 import TracksLoading from "@/components/tracks/TrackLoading";
+import { Metadata } from "next";
 import React, { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Playlists",
+  description: "Export your Spotify playlists as JSON",
+};
 
 export default async function PlaylistPage() {
   return (

@@ -3,13 +3,14 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import Header from "@/components/layout/Header";
+import { SITE_NAME } from "@/constants";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Spotify Tools",
-    default: "Spotify Tools",
+    template: `%s | ${SITE_NAME}`,
+    default: SITE_NAME,
   },
   description: "Export your Spotify data as JSON",
 };

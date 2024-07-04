@@ -1,6 +1,8 @@
 "use client";
+import { NAV_ITEMS } from "@/constants";
 import paths from "@/paths";
 import { Link, NavbarMenu, NavbarMenuItem } from "@nextui-org/react";
+import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 
@@ -15,37 +17,17 @@ export default function Menu() {
 
   return (
     <NavbarMenu>
-      {isAuthed && (
-        <NavbarMenuItem isActive={pathname === paths.top}>
-          <Link href={paths.top} color={pathname === paths.top ? "primary" : "foreground"} className="w-full" size="lg">
-            Top Tracks
-          </Link>
-        </NavbarMenuItem>
-      )}
-      {isAuthed && (
-        <NavbarMenuItem isActive={pathname === paths.saved}>
-          <Link
-            href={paths.saved}
-            color={pathname === paths.saved ? "primary" : "foreground"}
-            className="w-full"
-            size="lg"
-          >
-            Saved Tracks
-          </Link>
-        </NavbarMenuItem>
-      )}
-      {isAuthed && (
-        <NavbarMenuItem isActive={pathname === paths.playlists}>
-          <Link
-            href={paths.playlists}
-            color={pathname === paths.playlists ? "primary" : "foreground"}
-            className="w-full"
-            size="lg"
-          >
-            Playlists
-          </Link>
-        </NavbarMenuItem>
-      )}
+      {NAV_ITEMS.map(({ href, name, isProtected }) => {
+        if (isProtected && !isAuthed) return null;
+        const isActive = pathname === href;
+        return (
+          <NavbarMenuItem key={href} isActive={isActive}>
+            <Link href={href} color={"foreground"} className={clsx("w-full ", { "text-spoti": isActive })} size="lg">
+              {name}
+            </Link>
+          </NavbarMenuItem>
+        );
+      })}
     </NavbarMenu>
   );
 }

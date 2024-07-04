@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense } from "react";
 
@@ -21,17 +22,15 @@ function TermSelect() {
   const selectedTerm = searchParams.get("term");
 
   return (
-    <div className="flex flex-col gap-2 sm:flex-row items-center sm:justify-between">
+    <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
       <div>
         <h1 className="text-xl font-bold">Top Tracks</h1>
       </div>
       <div>
         <button
-          className={
-            !selectedTerm || selectedTerm === "short_term"
-              ? "font-semibold border-b border-gray-800 dark:border-gray-100 mx-2"
-              : "mx-2"
-          }
+          className={clsx("mx-2", {
+            "font-semibold mx-2 underline decoration-spoti": selectedTerm === "short_term",
+          })}
           onClick={() => {
             setTerm("short_term");
           }}
@@ -39,9 +38,9 @@ function TermSelect() {
           Last 4 Weeks
         </button>
         <button
-          className={
-            selectedTerm === "medium_term" ? "font-semibold border-b border-gray-800 dark:border-gray-100 mx-2" : "mx-2"
-          }
+          className={clsx("mx-2", {
+            "font-semibold mx-2 underline decoration-spoti": selectedTerm === "medium_term",
+          })}
           onClick={() => {
             setTerm("medium_term");
           }}
@@ -49,9 +48,9 @@ function TermSelect() {
           Last 6 Months
         </button>
         <button
-          className={
-            selectedTerm === "long_term" ? "font-semibold border-b border-gray-800 dark:border-gray-100 mx-2" : "mx-2"
-          }
+          className={clsx("mx-2", {
+            "font-semibold mx-2 underline decoration-spoti": selectedTerm === "long_term",
+          })}
           onClick={() => {
             setTerm("long_term");
           }}

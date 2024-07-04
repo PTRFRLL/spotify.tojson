@@ -2,12 +2,18 @@ import { fetchTopTracks } from "@/actions/spotify";
 import TermSelect from "@/components/TermSelect";
 import TopTracksList from "@/components/tracks/TopTracksList";
 import TracksLoading from "@/components/tracks/TrackLoading";
+import { Metadata } from "next";
 import { Suspense } from "react";
 
 type Props = {
   searchParams?: {
     term: string;
   };
+};
+
+export const metadata: Metadata = {
+  title: "Top Played",
+  description: "View your top played Spotify tracks",
 };
 
 export default async function TopTracks({ searchParams }: Props) {
