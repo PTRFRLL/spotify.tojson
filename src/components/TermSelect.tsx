@@ -28,6 +28,7 @@ function TermSelect() {
       </div>
       <div>
         <button
+          aria-label="Last 4 weeks"
           className={clsx("mx-2", {
             "font-semibold mx-2 underline decoration-spoti": !selectedTerm || selectedTerm === "short_term",
           })}
@@ -35,9 +36,10 @@ function TermSelect() {
             setTerm("short_term");
           }}
         >
-          Last 4 Weeks
+          Last 4 weeks
         </button>
         <button
+          aria-label="Last 6 months"
           className={clsx("mx-2", {
             "font-semibold mx-2 underline decoration-spoti": selectedTerm === "medium_term",
           })}
@@ -45,9 +47,10 @@ function TermSelect() {
             setTerm("medium_term");
           }}
         >
-          Last 6 Months
+          Last 6 months
         </button>
         <button
+          aria-label="Last year"
           className={clsx("mx-2", {
             "font-semibold mx-2 underline decoration-spoti": selectedTerm === "long_term",
           })}
@@ -55,7 +58,7 @@ function TermSelect() {
             setTerm("long_term");
           }}
         >
-          Last Year
+          Last year
         </button>
       </div>
     </div>

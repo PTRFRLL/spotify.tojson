@@ -86,6 +86,7 @@ export default function DownloadButton({ count, left, endpoint }: Props) {
         <div>
           <Tooltip content="This can take some time, please be patient">
             <Button
+              aria-label="Download"
               variant="bordered"
               isDisabled={running}
               isLoading={running && !error}
