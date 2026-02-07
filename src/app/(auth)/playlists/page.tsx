@@ -1,20 +1,76 @@
-import { fetchUserPlaylists } from "@/actions/spotify";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useSpotifyClient } from "@/hooks/useSpotifyClient";
+import { Playlist } from "@/types";
 import PlaylistList from "@/components/playlists/PlaylistList";
 import TracksLoading from "@/components/tracks/TrackLoading";
-import { Metadata } from "next";
-import React, { Suspense } from "react";
 
-export const metadata: Metadata = {
-  title: "Playlists",
-  description: "Export your Spotify playlists as JSON",
-};
+export default function PlaylistPage() {
+  const { client, status } = useSpotifyClient();
 
-export default async function PlaylistPage() {
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchPlaylists() {
+      if (!client) return;
+
+      try {
+        setLoading(true);
+        setError(null);
+        const { playlists: fetchedPlaylists, total: totalCount } = await client.fetchUserPlaylists();
+        setPlaylists(fetchedPlaylists);
+        setTotal(totalCount);
+      } catch (err) {
+        console.error("Error fetching playlists:", err);
+        setError(err instanceof Error ? err.message : "Failed to fetch playlists");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPlaylists();
+  }, [client]);
+
+  if (status === "loading" || loading) {
+    return (
+      <div className="flex flex-col gap-4 m-2">
+        <TracksLoading />
+      </div>
+    );
+  }
+
+  if (status === "unauthenticated") {
+    return (
+      <div className="flex flex-col gap-4 m-2">
+        <p>Please sign in to view your playlists.</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col gap-4 m-2">
+        <div className="text-red-500">
+          <h1 className="text-xl font-bold mb-2">Playlists</h1>
+          <p>Error: {error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-2 underline"
+          >
+            Try again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-4 m-2">
-      <Suspense fallback={<TracksLoading />}>
-        <PlaylistList fetchData={() => fetchUserPlaylists()} />
-      </Suspense>
+      <PlaylistList playlists={playlists} total={total} />
     </div>
   );
 }
