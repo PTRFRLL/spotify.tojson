@@ -5,6 +5,9 @@ declare module "next-auth" {
   interface Session {
     token: {
       access_token: string;
+      expires_at: number;
+      refresh_token: string;
+      error?: "RefreshAccessTokenError";
       user: {
         name: string;
         email: string;

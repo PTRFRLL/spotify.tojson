@@ -1,16 +1,24 @@
-import { auth } from "@/auth";
+"use client";
+
 import { Playlist } from "@/types";
-import { redirect } from "next/navigation";
 import React from "react";
 import PlaylistDisplay from "./PlaylistDisplay";
 import DownloadButton from "../DownloadButton";
 
 type PlaylistListProps = {
-  fetchData: () => Promise<{ playlists: Playlist[]; total: number }>;
+  playlists: Playlist[];
+  total: number;
 };
 
-export default async function PlaylistList({ fetchData }: PlaylistListProps) {
-  const { playlists, total } = await fetchData();
+export default function PlaylistList({ playlists, total }: PlaylistListProps) {
+  if (!playlists || playlists.length === 0) {
+    return (
+      <div className="max-w-2/3">
+        <DownloadButton endpoint="playlists" count={total} left={<h1 className="text-xl font-bold">Playlists</h1>} />
+        <p className="text-gray-500 mt-4">No playlists found</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2/3">

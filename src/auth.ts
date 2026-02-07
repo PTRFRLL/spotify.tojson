@@ -18,8 +18,12 @@ export const {
 } = NextAuth({
   providers: [
     Spotify({
-      authorization:
-        "https://accounts.spotify.com/authorize?scope=user-read-email,user-top-read,user-library-read,playlist-read-private",
+      authorization: {
+        url: "https://accounts.spotify.com/authorize",
+        params: {
+          scope: "user-read-email user-top-read user-library-read playlist-read-private",
+        },
+      },
       clientId: clientId,
       clientSecret: secret,
     }),
@@ -28,7 +32,7 @@ export const {
     signIn: paths.home,
   },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
+    authorized({ auth }) {
       const isLoggedIn = !!auth?.user;
       return isLoggedIn;
     },

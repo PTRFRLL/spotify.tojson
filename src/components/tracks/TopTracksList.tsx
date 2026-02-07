@@ -1,22 +1,22 @@
-import { auth } from "@/auth";
-import { Artist, SpotifyTrack, Track } from "@/types";
+"use client";
 
+import { Track } from "@/types";
 import React from "react";
 import TrackDisplay from "./TrackDisplay";
-import { redirect } from "next/navigation";
 
 type TrackListProps = {
-  fetchData: () => Promise<{ tracks: Track[]; total: number }>;
+  tracks: Track[];
 };
 
-async function TopTracksList({ fetchData }: TrackListProps) {
-  // const session = await auth();
+function TopTracksList({ tracks }: TrackListProps) {
+  if (!tracks || tracks.length === 0) {
+    return (
+      <div className="max-w-2/3">
+        <p className="text-gray-500">No tracks found</p>
+      </div>
+    );
+  }
 
-  // if (!session) {
-  //   redirect("/");
-  // }
-
-  const { tracks, total } = await fetchData();
   return (
     <div className="max-w-2/3">
       {tracks.map((track: Track, index: number) => (
