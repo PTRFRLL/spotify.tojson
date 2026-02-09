@@ -10,7 +10,10 @@ type Props = {
 
 export default function Providers({ children }: Props) {
   return (
-    <SessionProvider>
+    <SessionProvider
+      refetchOnWindowFocus={false}
+      refetchInterval={5 * 60}
+    >
       <ThemeProvider attribute="class" defaultTheme="dark">
         {children}
       </ThemeProvider>
