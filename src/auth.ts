@@ -50,8 +50,7 @@ export const {
             picture: token.picture,
           },
         };
-        //@ts-ignore
-      } else if (Date.now() < token.expires_at * 1000) {
+      } else if (token.expires_at && Date.now() < (token.expires_at as number) * 1000) {
         return token;
       } else {
         if (!token.refresh_token) throw new Error("Missing refresh token");

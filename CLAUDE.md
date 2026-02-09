@@ -103,9 +103,24 @@ Two approaches are used:
 - Use `fetchPaginatedFromSpotify()` for endpoints that return paginated results
 
 ## Tech Stack
-- Next.js 14.2 (App Router)
-- NextAuth v5 (Auth.js)
-- TypeScript
-- Tailwind CSS + NextUI components
-- Framer Motion for animations
+- Next.js 14.2.35 (App Router) - Updated Feb 2026 with security patches
+- React 18.3.1 (stable)
+- NextAuth v5.0.0-beta.30 (Auth.js) - Still in beta, no stable release yet
+- TypeScript 5.9.3
+- Tailwind CSS 3.4.19 + NextUI 2.4.2 components
+- Framer Motion 11.2.12 for animations
 - Spotify Web API
+
+### Dependency Strategy
+This project uses a **conservative upgrade approach** to maintain stability:
+- Stays on Next.js 14 and React 18 (proven, stable stack)
+- Updates security patches and minor versions
+- Avoids major version upgrades (Next.js 15, React 19) until ecosystem matures
+
+**When to Revisit Major Upgrades:**
+- When NextAuth v5 stable is released (currently in beta)
+- When Next.js 15 + React 19 ecosystem is mature (NextUI fully compatible, 6+ months adoption)
+- If security vulnerabilities require newer versions
+- If specific features from newer versions are needed
+
+Last updated: February 2026
