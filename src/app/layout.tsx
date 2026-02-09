@@ -5,7 +5,7 @@ import Providers from "./providers";
 import Header from "@/components/layout/Header";
 import { SITE_NAME } from "@/constants";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   title: {
