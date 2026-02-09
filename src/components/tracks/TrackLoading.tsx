@@ -16,8 +16,8 @@ function TrackLoading({ number }: { number: number }) {
   );
 }
 
-function TracksLoading() {
-  return Array.from({ length: 15 }).map((_, index) => <TrackLoading key={index} number={index} />);
+function TracksLoading({ startIndex = 0 }: { startIndex?: number }) {
+  return Array.from({ length: 15 }).map((_, index) => <TrackLoading key={index} number={startIndex + index} />);
 }
 
 export default TracksLoading;

@@ -13,10 +13,7 @@ export default function HeaderLinks() {
   const session = useSession();
 
   const isAuthed = session.data?.user;
-
-  if (session.status == "loading") {
-    return null;
-  }
+  const isLoading = session.status === "loading";
 
   return (
     <NavbarContent justify="start">
@@ -29,7 +26,7 @@ export default function HeaderLinks() {
         </NavbarItem>
       )}
 
-      {NAV_ITEMS.map(({ href, name, isProtected }) => {
+      {!isLoading && NAV_ITEMS.map(({ href, name, isProtected }) => {
         if (isProtected && !isAuthed) return null;
         return (
           <NavbarItem key={href} isActive={pathname === href} className="hidden sm:flex text-md">
