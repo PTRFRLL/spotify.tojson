@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useSpotifyClient } from "@/hooks/useSpotifyClient";
 import { Track } from "@/types";
 import SavedTracksList from "@/components/tracks/SavedTracksList";
 import TracksLoading from "@/components/tracks/TrackLoading";
 
-export default function SavedTracks() {
+function SavedTracksContent() {
   const { client, status } = useSpotifyClient();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get("page") || "1");
@@ -75,5 +75,13 @@ export default function SavedTracks() {
     <div className="flex flex-col gap-4 m-2">
       <SavedTracksList tracks={tracks} total={total} currentPage={page} />
     </div>
+  );
+}
+
+export default function SavedTracks() {
+  return (
+    <Suspense fallback={<TracksLoading startIndex={0} />}>
+      <SavedTracksContent />
+    </Suspense>
   );
 }
