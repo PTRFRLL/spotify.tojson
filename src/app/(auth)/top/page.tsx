@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useSpotifyClient } from "@/hooks/useSpotifyClient";
 import { Track } from "@/types";
@@ -9,7 +9,7 @@ import TracksLoading from "@/components/tracks/TrackLoading";
 import DownloadButton from "@/components/DownloadButton";
 import clsx from "clsx";
 
-export default function TopTracks() {
+function TopTracksContent() {
   const { client, status } = useSpotifyClient();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -191,5 +191,13 @@ export default function TopTracks() {
       </div>
       <TopTracksList tracks={tracks} />
     </div>
+  );
+}
+
+export default function TopTracks() {
+  return (
+    <Suspense fallback={<TracksLoading />}>
+      <TopTracksContent />
+    </Suspense>
   );
 }
