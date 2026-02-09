@@ -7,7 +7,7 @@ export default function TrackDisplay({ track, number }: { track: Track; number: 
     <div className="flex flex-row border-b border-gray-200 dark:border-gray-800 w-full mt-4">
       <p className="text-sm font-bold text-gray-400 dark:text-gray-600 min-w-4">{number + 1}</p>
       <div className="flex pl-3 gap-4">
-        <div>
+        <div className="flex-shrink-0">
           <Image className="rounded" src={track.image} alt="Album image" width={50} height={50} />
         </div>
         <div className="flex flex-col">

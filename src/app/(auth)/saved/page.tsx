@@ -41,7 +41,7 @@ export default function SavedTracks() {
   if (status === "loading" || loading) {
     return (
       <div className="flex flex-col gap-4 m-2">
-        <TracksLoading />
+        <TracksLoading startIndex={(page - 1) * 50} />
       </div>
     );
   }
