@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { useSession } from "next-auth/react";
+import { useEffect, useMemo } from "react";
+import { useSession, signOut } from "next-auth/react";
 import { SpotifyClient } from "@/lib/spotify-client";
 
 /**
@@ -18,6 +18,13 @@ import { SpotifyClient } from "@/lib/spotify-client";
  */
 export function useSpotifyClient() {
   const { data: session, status, update } = useSession();
+
+  // Auto sign-out if the server-side token refresh failed
+  useEffect(() => {
+    if (session?.token?.error === "RefreshAccessTokenError") {
+      signOut({ callbackUrl: "/" });
+    }
+  }, [session?.token?.error]);
 
   // Create a memoized client instance that only changes when session changes
   const client = useMemo(() => {

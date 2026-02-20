@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
+import { signOut } from "next-auth/react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useSpotifyClient } from "@/hooks/useSpotifyClient";
+import { AuthError } from "@/lib/spotify-client";
 import { Track } from "@/types";
 import TopTracksList from "@/components/tracks/TopTracksList";
 import TracksLoading from "@/components/tracks/TrackLoading";
@@ -40,6 +42,10 @@ function TopTracksContent() {
         const { tracks: fetchedTracks } = await client.fetchTopTracks(term);
         setTracks(fetchedTracks);
       } catch (err) {
+        if (err instanceof AuthError) {
+          signOut({ callbackUrl: "/" });
+          return;
+        }
         console.error("Error fetching top tracks:", err);
         setError(err instanceof Error ? err.message : "Failed to fetch tracks");
       } finally {

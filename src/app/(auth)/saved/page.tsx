@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
+import { signOut } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useSpotifyClient } from "@/hooks/useSpotifyClient";
+import { AuthError } from "@/lib/spotify-client";
 import { Track } from "@/types";
 import SavedTracksList from "@/components/tracks/SavedTracksList";
 import TracksLoading from "@/components/tracks/TrackLoading";
@@ -28,6 +30,10 @@ function SavedTracksContent() {
         setTracks(fetchedTracks);
         setTotal(totalCount);
       } catch (err) {
+        if (err instanceof AuthError) {
+          signOut({ callbackUrl: "/" });
+          return;
+        }
         console.error("Error fetching saved tracks:", err);
         setError(err instanceof Error ? err.message : "Failed to fetch tracks");
       } finally {

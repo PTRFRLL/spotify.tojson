@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { signOut } from "next-auth/react";
 import { useSpotifyClient } from "@/hooks/useSpotifyClient";
+import { AuthError } from "@/lib/spotify-client";
 import { Playlist } from "@/types";
 import PlaylistList from "@/components/playlists/PlaylistList";
 import TracksLoading from "@/components/tracks/TrackLoading";
@@ -25,6 +27,10 @@ export default function PlaylistPage() {
         setPlaylists(fetchedPlaylists);
         setTotal(totalCount);
       } catch (err) {
+        if (err instanceof AuthError) {
+          signOut({ callbackUrl: "/" });
+          return;
+        }
         console.error("Error fetching playlists:", err);
         setError(err instanceof Error ? err.message : "Failed to fetch playlists");
       } finally {

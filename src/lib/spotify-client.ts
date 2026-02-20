@@ -1,6 +1,13 @@
 import { Session } from "next-auth";
 import { Artist, Playlist, SpotifyResponse, SpotifyTrack, Track } from "@/types";
 
+export class AuthError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "AuthError";
+  }
+}
+
 const delay = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
@@ -40,7 +47,7 @@ export class SpotifyClient {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to refresh token");
+        throw new AuthError("Failed to refresh token");
       }
 
       const data = await response.json();
@@ -60,7 +67,10 @@ export class SpotifyClient {
       return data.access_token;
     } catch (error) {
       console.error("Token refresh error:", error);
-      throw new Error("Failed to refresh access token");
+      if (error instanceof AuthError) {
+        throw error;
+      }
+      throw new AuthError("Failed to refresh access token");
     }
   }
 
@@ -93,7 +103,7 @@ export class SpotifyClient {
       });
 
       if (!retryRes.ok) {
-        throw new Error(`Spotify API error: ${retryRes.status}`);
+        throw new AuthError(`Spotify API error after token refresh: ${retryRes.status}`);
       }
 
       return retryRes.json();
