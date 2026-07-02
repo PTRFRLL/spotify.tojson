@@ -2,7 +2,7 @@
 
 import { NAV_ITEMS, SITE_NAME } from "@/constants";
 import paths from "@/paths";
-import { Navbar, NavbarContent, NavbarItem, NavbarMenuToggle } from "@nextui-org/react";
+import { Navbar, NavbarContent, NavbarItem, NavbarMenuToggle } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

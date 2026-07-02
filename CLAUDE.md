@@ -25,6 +25,8 @@ npm start
 npm run lint
 ```
 
+> **Build tooling:** `dev` and `build` use **Turbopack** (Next.js 16 default). This is only safe because the UI library (HeroUI) is imported exclusively in Client Components — see the "HeroUI + Turbopack" note under Key Design Decisions. `lint` runs ESLint directly (`eslint src ...`) because `next lint` was removed in Next.js 16.
+
 ## Docker
 
 ```bash
@@ -39,7 +41,7 @@ docker run -p 3000:3000 \
   spotify-tojson
 ```
 
-Note: The Dockerfile uses dummy env vars during build time to satisfy Next.js build requirements. Real credentials must be provided at runtime.
+Note: The Dockerfile builds on `node:22-alpine` (Next.js 16 requires Node ≥20.9.0) and uses dummy env vars during build time to satisfy Next.js build requirements. Real credentials must be provided at runtime.
 
 ## Environment Variables
 
@@ -54,7 +56,7 @@ Required variables in `.env` (see `.env.sample`):
 - Uses NextAuth v5 (Auth.js) with Spotify provider configured in `src/auth.ts`
 - OAuth scopes: `user-read-email`, `user-top-read`, `user-library-read`, `playlist-read-private`
 - Token refresh logic is implemented in the JWT callback to handle expired access tokens
-- Middleware in `src/middleware.ts` protects routes: `/top`, `/saved`, `/playlists`
+- Middleware in `src/middleware.ts` protects routes: `/top`, `/saved`, `/playlists` (Next.js 16 deprecates the `middleware` file convention in favor of `proxy` — still functional, not yet migrated)
 
 ### Data Fetching Pattern
 Two approaches are used:
@@ -83,7 +85,8 @@ Two approaches are used:
 ### Key Design Decisions
 - Next.js App Router with server actions for data fetching
 - Standalone output mode (`next.config.mjs`) for Docker deployment
-- NextUI component library with Tailwind CSS
+- HeroUI component library (the maintained successor to NextUI) with Tailwind CSS v4, configured CSS-first in `src/app/globals.css` (`@import "tailwindcss"`, `@plugin "../../hero.ts"`, `@source`, `@theme`) — there is no `tailwind.config.ts`; PostCSS uses `@tailwindcss/postcss`
+- **HeroUI + Turbopack:** HeroUI components must only be imported in **Client Components**. Importing them into a Server Component breaks the Turbopack build (`createContext is not a function` during page-data collection). This is why `src/app/page.tsx` (a Server Component that calls `auth()`) delegates its UI to `src/components/Landing.tsx` (`"use client"`), and why `Header`/`TrackLoading` are client components
 - Dark/light theme switching via next-themes
 - Client-side download via blob URLs generated from JSON data
 
@@ -103,24 +106,28 @@ Two approaches are used:
 - Use `fetchPaginatedFromSpotify()` for endpoints that return paginated results
 
 ## Tech Stack
-- Next.js 14.2.35 (App Router) - Updated Feb 2026 with security patches
-- React 18.3.1 (stable)
+- Next.js 16.2.10 (App Router) - Upgraded from 14.x July 2026 (14.x reached security EOL); builds use Turbopack
+- React 18.3.1 (stable) - intentionally kept on 18; Next 16 supports React 18 or 19
 - NextAuth v5.0.0-beta.30 (Auth.js) - Still in beta, no stable release yet
 - TypeScript 5.9.3
-- Tailwind CSS 3.4.19 + NextUI 2.4.2 components
-- Framer Motion 11.2.12 for animations
+- Tailwind CSS 4.3.2 (CSS-first config) + HeroUI 2.8.10 components (migrated from NextUI July 2026)
+- Framer Motion 11.18.2 for animations
+- next-themes 0.4.6 for theming
+- ESLint 8 + eslint-config-next 15.5.20
 - Spotify Web API
 
 ### Dependency Strategy
 This project uses a **conservative upgrade approach** to maintain stability:
-- Stays on Next.js 14 and React 18 (proven, stable stack)
-- Updates security patches and minor versions
-- Avoids major version upgrades (Next.js 15, React 19) until ecosystem matures
+- Currently on Next.js 16 + React 18 + Tailwind 4 + HeroUI 2.8. The Next.js 14→16 jump (July 2026) was forced by security — 14.2.35 was the last 14.x release and stayed vulnerable, so there was no patched 14.x to remain on.
+- React is intentionally held at 18 (Next 16 supports both 18 and 19) to keep the component/animation stack on proven versions.
+- Prefer security patches and in-major (minor/patch) updates; avoid unnecessary major jumps.
+
+**History:** July 2026 — migrated NextUI → HeroUI and Tailwind 3 → 4 to unblock Turbopack (NextUI was not Turbopack-compatible). React deliberately stayed on 18 by using HeroUI 2.x, the last line that supports React 18 (HeroUI 3.x requires React 19 + Tailwind ≥4).
 
 **When to Revisit Major Upgrades:**
-- When NextAuth v5 stable is released (currently in beta)
-- When Next.js 15 + React 19 ecosystem is mature (NextUI fully compatible, 6+ months adoption)
-- If security vulnerabilities require newer versions
-- If specific features from newer versions are needed
+- **React 19 + HeroUI 3.x:** HeroUI 3.x requires React 19 (and Tailwind ≥4). Revisit once React 19 is proven across the stack.
+- **NextAuth v5 stable:** currently still on beta.30.
+- **`middleware` → `proxy`:** Next 16 deprecated the middleware file convention.
+- Whenever security vulnerabilities require it (as with the Next 16 jump).
 
-Last updated: February 2026
+Last updated: July 2026

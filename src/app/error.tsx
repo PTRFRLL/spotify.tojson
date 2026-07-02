@@ -1,7 +1,7 @@
 "use client";
 
 import paths from "@/paths";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { FaSignOutAlt } from "react-icons/fa";
