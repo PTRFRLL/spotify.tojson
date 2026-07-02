@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Link, Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
+import { Button, Link, Navbar, NavbarContent, NavbarItem } from "@heroui/react";
 import React from "react";
 import ThemeSwitcher from "./ThemeSwitcher";
 import HeaderAuth from "./HeaderAuth";

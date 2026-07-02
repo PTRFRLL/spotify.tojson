@@ -1,4 +1,6 @@
-import { Skeleton } from "@nextui-org/react";
+"use client";
+
+import { Skeleton } from "@heroui/react";
 import React from "react";
 
 function TrackLoading({ number }: { number: number }) {

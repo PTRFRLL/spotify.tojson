@@ -40,6 +40,6 @@ npm run dev
 - [NextJS](https://nextjs.org/)
 - [Next-Auth/Auth.js](https://authjs.dev)
 - [Tailwindcss](https://tailwindcss.com/)
-- [NextUI](https://nextui.org/)
+- [HeroUI](https://heroui.com/)
 - [NextTheme](https://github.com/pacocoursey/next-themes)
 - [Spotify Web Api](https://developer.spotify.com/documentation/web-api)

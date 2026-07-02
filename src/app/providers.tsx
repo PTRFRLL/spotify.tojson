@@ -1,5 +1,5 @@
 "use client";
-import { NextUIProvider } from "@nextui-org/react";
+import { HeroUIProvider } from "@heroui/react";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
 import React from "react";
@@ -14,9 +14,11 @@ export default function Providers({ children }: Props) {
       refetchOnWindowFocus={false}
       refetchInterval={5 * 60}
     >
-      <ThemeProvider attribute="class" defaultTheme="dark">
-        {children}
-      </ThemeProvider>
+      <HeroUIProvider>
+        <ThemeProvider attribute="class" defaultTheme="dark">
+          {children}
+        </ThemeProvider>
+      </HeroUIProvider>
     </SessionProvider>
   );
 }

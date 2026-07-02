@@ -1,5 +1,5 @@
 "use client";
-import { Button, Progress, Tooltip } from "@nextui-org/react";
+import { Button, Progress, Tooltip } from "@heroui/react";
 import { useState } from "react";
 import { FaDownload } from "react-icons/fa6";
 import { useSpotifyClient } from "@/hooks/useSpotifyClient";
