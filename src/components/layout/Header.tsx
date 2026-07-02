@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Link, Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
 import React from "react";
 import ThemeSwitcher from "./ThemeSwitcher";
@@ -8,7 +10,7 @@ import { FaGithub } from "react-icons/fa6";
 import { REPO_PATH } from "@/constants";
 import packageJson from "../../../package.json";
 
-export default async function Header() {
+export default function Header() {
   return (
     <Navbar isBordered className="mb-4">
       <HeaderLinks />
