@@ -29,7 +29,7 @@ export default function HeaderLinks() {
       {!isLoading && NAV_ITEMS.map(({ href, name, isProtected }) => {
         if (isProtected && !isAuthed) return null;
         return (
-          <NavbarItem key={href} isActive={pathname === href} className="hidden sm:flex text-md">
+          <NavbarItem key={href} isActive={pathname === href} className="hidden sm:flex">
             <Link href={href}>{name}</Link>
           </NavbarItem>
         );

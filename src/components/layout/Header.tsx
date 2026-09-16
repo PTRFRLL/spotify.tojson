@@ -17,7 +17,7 @@ export default function Header() {
 
       <NavbarContent justify="end">
         <NavbarItem>
-          <Button as={Link} href={REPO_PATH} variant="light" isIconOnly target="_blank" aria-label="Toggle Theme">
+          <Button as={Link} href={REPO_PATH} variant="light" isIconOnly target="_blank" aria-label="View source on GitHub">
             <FaGithub size={"1.2em"} />
           </Button>
         </NavbarItem>

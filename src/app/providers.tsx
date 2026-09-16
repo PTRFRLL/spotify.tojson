@@ -14,11 +14,9 @@ export default function Providers({ children }: Props) {
       refetchOnWindowFocus={false}
       refetchInterval={5 * 60}
     >
-      <HeroUIProvider>
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          {children}
-        </ThemeProvider>
-      </HeroUIProvider>
+      <ThemeProvider attribute="class" defaultTheme="dark">
+        <HeroUIProvider>{children}</HeroUIProvider>
+      </ThemeProvider>
     </SessionProvider>
   );
 }

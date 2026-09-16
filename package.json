@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroui/react": "^2.8.10",
+    "@heroui/theme": "2.4.26",
     "axios": "^1.17.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.18.2",

@@ -86,6 +86,7 @@ Two approaches are used:
 - Next.js App Router with server actions for data fetching
 - Standalone output mode (`next.config.mjs`) for Docker deployment
 - HeroUI component library (the maintained successor to NextUI) with Tailwind CSS v4, configured CSS-first in `src/app/globals.css` (`@import "tailwindcss"`, `@plugin "../../hero.ts"`, `@source`, `@theme`) — there is no `tailwind.config.ts`; PostCSS uses `@tailwindcss/postcss`
+- **`@heroui/theme` must stay a direct, exactly-pinned dependency.** HeroUI v2 ships its component styles as Tailwind class *strings* inside `@heroui/theme/dist`, which the `@source` line in `globals.css` scans. The package is only a transitive dep of `@heroui/react`, and npm does not reliably hoist it — when it lands nested under `node_modules/@heroui/react/node_modules/`, the `@source` glob matches nothing and **every HeroUI component renders unstyled** (a 26-rule stylesheet; squished `Navbar`, unpadded `Button`). Listing it directly forces it to `node_modules/@heroui/theme`. Pin it to the exact version `@heroui/react` depends on (no caret), or Tailwind can scan one version's class strings while the runtime emits another's — **bump the two in lockstep.**
 - **HeroUI + Turbopack:** HeroUI components must only be imported in **Client Components**. Importing them into a Server Component breaks the Turbopack build (`createContext is not a function` during page-data collection). This is why `src/app/page.tsx` (a Server Component that calls `auth()`) delegates its UI to `src/components/Landing.tsx` (`"use client"`), and why `Header`/`TrackLoading` are client components
 - Dark/light theme switching via next-themes
 - Client-side download via blob URLs generated from JSON data
@@ -111,6 +112,7 @@ Two approaches are used:
 - NextAuth v5.0.0-beta.30 (Auth.js) - Still in beta, no stable release yet
 - TypeScript 5.9.3
 - Tailwind CSS 4.3.2 (CSS-first config) + HeroUI 2.8.10 components (migrated from NextUI July 2026)
+- `@heroui/theme` 2.4.26 — pinned exactly to match `@heroui/react`'s dependency; see the note under Key Design Decisions
 - Framer Motion 11.18.2 for animations
 - next-themes 0.4.6 for theming
 - ESLint 8 + eslint-config-next 15.5.20
@@ -130,4 +132,4 @@ This project uses a **conservative upgrade approach** to maintain stability:
 - **`middleware` → `proxy`:** Next 16 deprecated the middleware file convention.
 - Whenever security vulnerabilities require it (as with the Next 16 jump).
 
-Last updated: July 2026
+Last updated: September 2026
