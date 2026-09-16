@@ -10,15 +10,11 @@ type TrackListProps = {
 
 function TopTracksList({ tracks }: TrackListProps) {
   if (!tracks || tracks.length === 0) {
-    return (
-      <div className="max-w-2/3">
-        <p className="text-gray-500">No tracks found</p>
-      </div>
-    );
+    return <p className="text-default-500">No tracks found</p>;
   }
 
   return (
-    <div className="max-w-2/3">
+    <div>
       {tracks.map((track: Track, index: number) => (
         <TrackDisplay key={track.uri} track={track} number={index} />
       ))}

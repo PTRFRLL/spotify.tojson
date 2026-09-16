@@ -119,7 +119,7 @@ export default function DownloadButton({ count, left, endpoint, term }: Props) {
           <Progress size="sm" color={color()} value={progress} aria-label="Loading" />
         )}
         {error && (
-          <div className="text-red-500 text-sm mt-2">
+          <div className="text-danger text-sm mt-2">
             <p>Error: {errorMessage}</p>
             <button
               onClick={() => {

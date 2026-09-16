@@ -7,6 +7,7 @@ import { AuthError } from "@/lib/spotify-client";
 import { Playlist } from "@/types";
 import PlaylistList from "@/components/playlists/PlaylistList";
 import TracksLoading from "@/components/tracks/TrackLoading";
+import DownloadButton from "@/components/DownloadButton";
 
 export default function PlaylistPage() {
   const { client, status } = useSpotifyClient();
@@ -41,42 +42,42 @@ export default function PlaylistPage() {
     fetchPlaylists();
   }, [client]);
 
-  if (status === "loading" || loading) {
-    return (
-      <div className="flex flex-col gap-4 m-2">
-        <TracksLoading />
-      </div>
-    );
+  if (status === "unauthenticated") {
+    return <p>Please sign in to view your playlists.</p>;
   }
 
-  if (status === "unauthenticated") {
+  // Same header in every branch, so the list doesn't reflow between loading and loaded.
+  const header = (
+    <DownloadButton endpoint="playlists" count={total} left={<h1 className="text-xl font-bold">Playlists</h1>} />
+  );
+
+  if (status === "loading" || loading) {
     return (
-      <div className="flex flex-col gap-4 m-2">
-        <p>Please sign in to view your playlists.</p>
-      </div>
+      <>
+        {header}
+        <TracksLoading />
+      </>
     );
   }
 
   if (error) {
     return (
-      <div className="flex flex-col gap-4 m-2">
-        <div className="text-red-500">
-          <h1 className="text-xl font-bold mb-2">Playlists</h1>
+      <>
+        {header}
+        <div className="text-danger">
           <p>Error: {error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-2 underline"
-          >
+          <button onClick={() => window.location.reload()} className="mt-2 underline">
             Try again
           </button>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4 m-2">
-      <PlaylistList playlists={playlists} total={total} />
-    </div>
+    <>
+      {header}
+      <PlaylistList playlists={playlists} />
+    </>
   );
 }
