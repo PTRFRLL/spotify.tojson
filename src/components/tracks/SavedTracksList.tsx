@@ -2,7 +2,6 @@
 
 import { Track } from "@/types";
 import React from "react";
-import DownloadButton from "../DownloadButton";
 import TrackDisplay from "./TrackDisplay";
 import TrackPages from "./TrackPages";
 
@@ -17,17 +16,11 @@ export default function SavedTracksList({ tracks, total, currentPage }: SavedTra
   const startIndex = (currentPage - 1) * 50;
 
   if (!tracks || tracks.length === 0) {
-    return (
-      <div className="max-w-2/3">
-        <DownloadButton endpoint="tracks" count={total} left={<h1 className="text-xl font-bold">Saved Tracks</h1>} />
-        <p className="text-gray-500 mt-4">No saved tracks found</p>
-      </div>
-    );
+    return <p className="text-default-500">No saved tracks found</p>;
   }
 
   return (
-    <div className="max-w-2/3">
-      <DownloadButton endpoint="tracks" count={total} left={<h1 className="text-xl font-bold">Saved Tracks</h1>} />
+    <>
       <div>
         {tracks.map((track: Track, index: number) => (
           <TrackDisplay key={track.id} track={track} number={startIndex + index} />
@@ -38,6 +31,6 @@ export default function SavedTracksList({ tracks, total, currentPage }: SavedTra
           <TrackPages total={totalPages} />
         </div>
       )}
-    </div>
+    </>
   );
 }

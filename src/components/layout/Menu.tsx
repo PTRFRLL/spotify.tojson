@@ -1,7 +1,7 @@
 "use client";
 import { NAV_ITEMS } from "@/constants";
 import paths from "@/paths";
-import { Link, NavbarMenu, NavbarMenuItem } from "@nextui-org/react";
+import { Link, NavbarMenu, NavbarMenuItem } from "@heroui/react";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";

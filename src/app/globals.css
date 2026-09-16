@@ -1,15 +1,20 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "../../hero.ts";
+@source "../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-spoti: #20d464;
+}
 
 .brand {
-  text-decoration: none !important
+  text-decoration: none !important;
 }
 
 li[data-active="true"] {
-    @apply underline decoration-spoti;
-  }
+  @apply underline decoration-spoti;
+}
 
-  header > ul > li {
-    @apply hover:underline
-  }
+header > ul > li {
+  @apply hover:underline;
+}

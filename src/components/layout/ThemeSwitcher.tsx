@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
 import { IoMoon, IoSunnyOutline, IoCloudyNightOutline } from "react-icons/io5";

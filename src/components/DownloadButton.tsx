@@ -1,5 +1,5 @@
 "use client";
-import { Button, Progress, Tooltip } from "@nextui-org/react";
+import { Button, Progress, Tooltip } from "@heroui/react";
 import { useState } from "react";
 import { FaDownload } from "react-icons/fa6";
 import { useSpotifyClient } from "@/hooks/useSpotifyClient";
@@ -119,7 +119,7 @@ export default function DownloadButton({ count, left, endpoint, term }: Props) {
           <Progress size="sm" color={color()} value={progress} aria-label="Loading" />
         )}
         {error && (
-          <div className="text-red-500 text-sm mt-2">
+          <div className="text-danger text-sm mt-2">
             <p>Error: {errorMessage}</p>
             <button
               onClick={() => {

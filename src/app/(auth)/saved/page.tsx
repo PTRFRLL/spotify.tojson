@@ -8,6 +8,7 @@ import { AuthError } from "@/lib/spotify-client";
 import { Track } from "@/types";
 import SavedTracksList from "@/components/tracks/SavedTracksList";
 import TracksLoading from "@/components/tracks/TrackLoading";
+import DownloadButton from "@/components/DownloadButton";
 
 function SavedTracksContent() {
   const { client, status } = useSpotifyClient();
@@ -44,43 +45,43 @@ function SavedTracksContent() {
     fetchTracks();
   }, [client, page]);
 
-  if (status === "loading" || loading) {
-    return (
-      <div className="flex flex-col gap-4 m-2">
-        <TracksLoading startIndex={(page - 1) * 50} />
-      </div>
-    );
+  if (status === "unauthenticated") {
+    return <p>Please sign in to view your saved tracks.</p>;
   }
 
-  if (status === "unauthenticated") {
+  // Same header in every branch, so the list doesn't reflow between loading and loaded.
+  const header = (
+    <DownloadButton endpoint="tracks" count={total} left={<h1 className="text-xl font-bold">Saved Tracks</h1>} />
+  );
+
+  if (status === "loading" || loading) {
     return (
-      <div className="flex flex-col gap-4 m-2">
-        <p>Please sign in to view your saved tracks.</p>
-      </div>
+      <>
+        {header}
+        <TracksLoading startIndex={(page - 1) * 50} />
+      </>
     );
   }
 
   if (error) {
     return (
-      <div className="flex flex-col gap-4 m-2">
-        <div className="text-red-500">
-          <h1 className="text-xl font-bold mb-2">Saved Tracks</h1>
+      <>
+        {header}
+        <div className="text-danger">
           <p>Error: {error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-2 underline"
-          >
+          <button onClick={() => window.location.reload()} className="mt-2 underline">
             Try again
           </button>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4 m-2">
+    <>
+      {header}
       <SavedTracksList tracks={tracks} total={total} currentPage={page} />
-    </div>
+    </>
   );
 }
 

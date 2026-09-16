@@ -1,4 +1,6 @@
-import { Button, Link, Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
+"use client";
+
+import { Button, Link, Navbar, NavbarContent, NavbarItem } from "@heroui/react";
 import React from "react";
 import ThemeSwitcher from "./ThemeSwitcher";
 import HeaderAuth from "./HeaderAuth";
@@ -8,14 +10,14 @@ import { FaGithub } from "react-icons/fa6";
 import { REPO_PATH } from "@/constants";
 import packageJson from "../../../package.json";
 
-export default async function Header() {
+export default function Header() {
   return (
     <Navbar isBordered className="mb-4">
       <HeaderLinks />
 
       <NavbarContent justify="end">
         <NavbarItem>
-          <Button as={Link} href={REPO_PATH} variant="light" isIconOnly target="_blank" aria-label="Toggle Theme">
+          <Button as={Link} href={REPO_PATH} variant="light" isIconOnly target="_blank" aria-label="View source on GitHub">
             <FaGithub size={"1.2em"} />
           </Button>
         </NavbarItem>

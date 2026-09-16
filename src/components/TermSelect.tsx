@@ -2,9 +2,15 @@
 
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { Suspense } from "react";
+import React from "react";
 
-function TermSelect() {
+const TERMS = [
+  { value: "short_term", label: "Last 4 weeks" },
+  { value: "medium_term", label: "Last 6 months" },
+  { value: "long_term", label: "Last year" },
+];
+
+export default function TermSelect() {
   const { replace } = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -19,50 +25,22 @@ function TermSelect() {
     replace(`${pathname}?${params.toString()}`);
   };
 
-  const selectedTerm = searchParams.get("term");
+  const selectedTerm = searchParams.get("term") || "short_term";
 
   return (
-    <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
-      <div>
-        <h1 className="text-xl font-bold">Top Tracks</h1>
-      </div>
-      <div>
+    <div className="flex flex-wrap gap-2">
+      {TERMS.map(({ value, label }) => (
         <button
-          aria-label="Last 4 weeks"
-          className={clsx("mx-2", {
-            "font-semibold mx-2 underline decoration-spoti": !selectedTerm || selectedTerm === "short_term",
+          key={value}
+          aria-label={label}
+          className={clsx("px-3 py-1 rounded", {
+            "font-semibold underline decoration-spoti": selectedTerm === value,
           })}
-          onClick={() => {
-            setTerm("short_term");
-          }}
+          onClick={() => setTerm(value)}
         >
-          Last 4 weeks
+          {label}
         </button>
-        <button
-          aria-label="Last 6 months"
-          className={clsx("mx-2", {
-            "font-semibold mx-2 underline decoration-spoti": selectedTerm === "medium_term",
-          })}
-          onClick={() => {
-            setTerm("medium_term");
-          }}
-        >
-          Last 6 months
-        </button>
-        <button
-          aria-label="Last year"
-          className={clsx("mx-2", {
-            "font-semibold mx-2 underline decoration-spoti": selectedTerm === "long_term",
-          })}
-          onClick={() => {
-            setTerm("long_term");
-          }}
-        >
-          Last year
-        </button>
-      </div>
+      ))}
     </div>
   );
 }
-
-export default TermSelect;

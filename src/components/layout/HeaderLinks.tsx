@@ -2,7 +2,7 @@
 
 import { NAV_ITEMS, SITE_NAME } from "@/constants";
 import paths from "@/paths";
-import { Navbar, NavbarContent, NavbarItem, NavbarMenuToggle } from "@nextui-org/react";
+import { Navbar, NavbarContent, NavbarItem, NavbarMenuToggle } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -29,7 +29,7 @@ export default function HeaderLinks() {
       {!isLoading && NAV_ITEMS.map(({ href, name, isProtected }) => {
         if (isProtected && !isAuthed) return null;
         return (
-          <NavbarItem key={href} isActive={pathname === href} className="hidden sm:flex text-md">
+          <NavbarItem key={href} isActive={pathname === href} className="hidden sm:flex">
             <Link href={href}>{name}</Link>
           </NavbarItem>
         );
